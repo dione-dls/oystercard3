@@ -6,7 +6,7 @@ describe Oystercard do
   end
 
   it 'should return false' do
-    expect(subject.en_route).to eq false
+    expect(subject.in_journey?).to eq false
   end
 
   describe '#top_up' do
@@ -40,17 +40,16 @@ describe Oystercard do
   context 'card usage during the journey' do
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
-        expect(subject).to respond_to(:touch_in)
+        subject.touch_in
+        expect(subject.in_journey?).to eq true
       end
-
-      # it 'should change the state of #in_journey?' do
-      #   expect(subject)
-      # end
     end
 
     describe '#touch_out method' do
       it 'should respond to #touch_out' do
-        expect(subject).to respond_to(:touch_out)
+        subject.touch_in
+        subject.touch_out
+        expect(subject.in_journey?).to eq false
       end
     end
 
