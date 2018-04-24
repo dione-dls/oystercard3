@@ -1,12 +1,16 @@
 require 'oystercard'
 
 describe Oystercard do
-  it 'should have 0 #balance on instantiation' do
+  it 'should have £0 #balance on setup' do
     expect(subject.balance).to eq 0
   end
 
-  it 'should return false' do
+  it '#in_journey? should be false' do
     expect(subject.in_journey?).to eq false
+  end
+
+  it 'should have an empty @journey_history' do
+    expect(subject.journey_history).to be_empty
   end
 
   describe '#top_up' do
@@ -28,11 +32,16 @@ describe Oystercard do
 
   context 'card usage during the journey' do
     let(:entry_station) { 'Station A' }
+    let(:exit_station) { 'Station B' }
+
+    def top_up_touch_in
+      subject.top_up(10)
+      subject.touch_in(entry_station)
+    end
 
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
-        subject.top_up(10)
-        subject.touch_in(entry_station)
+        top_up_touch_in
         expect(subject.in_journey?).to eq true
       end
 
@@ -43,16 +52,20 @@ describe Oystercard do
 
     describe '#touch_out method' do
       it 'should respond to #touch_out' do
-        subject.top_up(10)
-        subject.touch_in(entry_station)
-        subject.touch_out
+        top_up_touch_in
+        subject.touch_out(exit_station)
         expect(subject.in_journey?).to eq false
       end
 
       it 'should reduce card balance by the minimum fare' do
-        subject.top_up(10)
-        subject.touch_in(entry_station)
-        expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
+        top_up_touch_in
+        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
+      end
+
+      it 'should record the journey' do
+        top_up_touch_in
+        subject.touch_out(exit_station)
+        expect(subject.journey_history.length).to eq 1
       end
     end
 
@@ -66,13 +79,13 @@ describe Oystercard do
       end
     end
 
-    describe 'stores journey history' do
-
-      it 'should have a record of that journey\'s history' do
-        subject.top_up(5)
-        subject.touch_in(entry_station)
-        expect(subject.history).to include(entry_station)
-      end
-    end
+    # describe 'stores journey history' do
+    #
+    #   it 'should have a record of that journey\'s history' do
+    #     subject.top_up(5)
+    #     subject.touch_in(entry_station)
+    #     expect(subject.history).to include(entry_station)
+    #   end
+    # end
   end
 end
