@@ -26,35 +26,36 @@ describe Oystercard do
     end
   end
 
-=begin
   context 'card usage during the journey' do
+    let(:entry_station) { 'Station A' }
+
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
         subject.top_up(10)
-        subject.touch_in
+        subject.touch_in(entry_station)
         expect(subject.in_journey?).to eq true
       end
 
       it 'should raise an error when balance is below minimum' do
-        expect { subject.touch_in }.to raise_error RuntimeError
+        expect { subject.touch_in(entry_station) }.to raise_error RuntimeError
       end
     end
 
     describe '#touch_out method' do
       it 'should respond to #touch_out' do
         subject.top_up(10)
-        subject.touch_in
+        subject.touch_in(entry_station)
         subject.touch_out
         expect(subject.in_journey?).to eq false
       end
 
       it 'should reduce card balance by the minimum fare' do
         subject.top_up(10)
-        subject.touch_in
+        subject.touch_in(entry_station)
         expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
       end
     end
-=end
+
     describe '#in_journey?' do
       it 'should respond to #in_journey?' do
         expect(subject).to respond_to(:in_journey?)
@@ -66,7 +67,6 @@ describe Oystercard do
     end
 
     describe 'stores journey history' do
-      let(:entry_station) { 'Station A' }
 
       it 'should have a record of that journey\'s history' do
         subject.top_up(5)
@@ -74,4 +74,5 @@ describe Oystercard do
         expect(subject.history).to include(entry_station)
       end
     end
+  end
 end
