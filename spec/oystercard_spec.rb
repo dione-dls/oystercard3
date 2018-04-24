@@ -57,6 +57,12 @@ describe Oystercard do
         subject.touch_out
         expect(subject.in_journey?).to eq false
       end
+
+      it 'should reduce card balance by the minimum fare' do
+        subject.top_up(10)
+        subject.touch_in
+        expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
+      end
     end
 
     describe '#in_journey?' do
