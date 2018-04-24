@@ -26,16 +26,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct method' do
-    it 'should reduce #balance by value' do
-      subject.deduct(10)
-      expect(subject.balance).to eq -10
-    end
-
-    it 'should raise an error if the value to be deducted is less than 0' do
-      expect { subject.deduct(-10) }.to raise_error "Invalid amount"
-    end
-  end
 
   context 'card usage during the journey' do
     describe '#touch_in method' do
