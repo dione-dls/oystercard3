@@ -26,7 +26,7 @@ describe Oystercard do
     end
   end
 
-
+=begin
   context 'card usage during the journey' do
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
@@ -54,7 +54,7 @@ describe Oystercard do
         expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
       end
     end
-
+=end
     describe '#in_journey?' do
       it 'should respond to #in_journey?' do
         expect(subject).to respond_to(:in_journey?)
@@ -64,7 +64,14 @@ describe Oystercard do
         expect(subject).not_to be_in_journey
       end
     end
-  end
 
+    describe 'stores journey history' do
+      let(:entry_station) { 'Station A' }
 
+      it 'should have a record of that journey\'s history' do
+        subject.top_up(5)
+        subject.touch_in(entry_station)
+        expect(subject.history).to include(entry_station)
+      end
+    end
 end

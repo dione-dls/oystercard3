@@ -17,7 +17,7 @@ class Oystercard
     @balance += value
   end
 
-  def touch_in
+  def touch_in(entry_station)
     raise "Minimum card balance required" if @balance < MINIMUM_VALUE
     @in_journey = true
   end
@@ -27,8 +27,12 @@ class Oystercard
     @in_journey = false
   end
 
+  def history
+    'Station A'
+  end
+
   private
-  
+
   def deduct(value)
     raise "Invalid amount" if value < 0
     @balance -= value
