@@ -40,13 +40,19 @@ describe Oystercard do
   context 'card usage during the journey' do
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
+        subject.top_up(10)
         subject.touch_in
         expect(subject.in_journey?).to eq true
+      end
+
+      it 'should raise an error when balance is below minimum' do
+        expect { subject.touch_in }.to raise_error RuntimeError
       end
     end
 
     describe '#touch_out method' do
       it 'should respond to #touch_out' do
+        subject.top_up(10)
         subject.touch_in
         subject.touch_out
         expect(subject.in_journey?).to eq false
