@@ -30,13 +30,17 @@ describe Oystercard do
     end
   end
 
-  context 'card usage during the journey' do
+  context 'journey card usage' do
     let(:entry_station) { 'Station A' }
     let(:exit_station) { 'Station B' }
 
     def top_up_touch_in
       subject.top_up(10)
       subject.touch_in(entry_station)
+    end
+    def top_up_touch_in_touch_out
+      top_up_touch_in
+      subject.touch_out(exit_station)
     end
 
     describe '#touch_in method' do
@@ -52,8 +56,7 @@ describe Oystercard do
 
     describe '#touch_out method' do
       it 'should respond to #touch_out' do
-        top_up_touch_in
-        subject.touch_out(exit_station)
+        top_up_touch_in_touch_out
         expect(subject.in_journey?).to eq false
       end
 
@@ -63,29 +66,16 @@ describe Oystercard do
       end
 
       it 'should record the journey' do
-        top_up_touch_in
-        subject.touch_out(exit_station)
+        top_up_touch_in_touch_out
         expect(subject.journey_history.length).to eq 1
       end
     end
 
-    describe '#in_journey?' do
-      it 'should respond to #in_journey?' do
-        expect(subject).to respond_to(:in_journey?)
-      end
-
-      it 'returns a boolean value' do
-        expect(subject).not_to be_in_journey
+    describe 'journey history' do
+      it 'should store the journey' do
+        top_up_touch_in_touch_out
+        expect(subject.journey_history).to include(entry_station => exit_station)
       end
     end
-
-    # describe 'stores journey history' do
-    #
-    #   it 'should have a record of that journey\'s history' do
-    #     subject.top_up(5)
-    #     subject.touch_in(entry_station)
-    #     expect(subject.history).to include(entry_station)
-    #   end
-    # end
   end
 end
