@@ -38,6 +38,7 @@ describe Oystercard do
       subject.top_up(10)
       subject.touch_in(entry_station)
     end
+
     def top_up_touch_in_touch_out
       top_up_touch_in
       subject.touch_out(exit_station)
