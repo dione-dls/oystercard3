@@ -1,32 +1,40 @@
 require 'oystercard'
 
 describe Oystercard do
-  it 'should have £0 #balance on setup' do
-    expect(subject.balance).to eq 0
-  end
 
-  it '#in_journey? should be false' do
-    expect(subject.in_journey?).to eq false
-  end
+  subject(:card) { described_class.new }
+  let(:entry_station) {entry_station}
+  let(:exit_station) {entry_station}
 
-  it 'should have an empty @journey_history' do
-    expect(subject.journey_history).to be_empty
+  describe '#initialize' do
+    it 'should have £0 #balance on setup' do
+      expect(card.balance).to eq 0
+    end
+
+    it '#in_journey? should be false' do
+      expect(card.in_journey?).to eq false
+    end
+
+    it 'should have an empty journey' do
+      journey_init = { entry_station: nil, exit_station: nil }
+      expect(card.journey).to eq journey_init
+    end
   end
 
   describe '#top_up' do
     it 'adds money to the balance of the card' do
-      subject.top_up(5)
-      expect(subject.balance).to eq 5
+      card.top_up(5)
+      expect(card.balance).to eq 5
     end
 
     it 'raises an error during top-up when the balance exceeds 90' do
-      expect { subject.top_up(Oystercard::LIMIT + 1)
+      expect { card.top_up(Oystercard::LIMIT + 1)
       }.to raise_error "Maximum limit of £#{Oystercard::LIMIT} exceeded"
     end
 
     it 'expects balance to equal limit constant' do
-      subject.top_up(90)
-      expect(subject.balance).to eq Oystercard::LIMIT
+      card.top_up(90)
+      expect(card.balance).to eq Oystercard::LIMIT
     end
   end
 
@@ -35,47 +43,53 @@ describe Oystercard do
     let(:exit_station) { 'Station B' }
 
     def top_up_touch_in
-      subject.top_up(10)
-      subject.touch_in(entry_station)
+      card.top_up(10)
+      card.touch_in(entry_station)
     end
 
     def top_up_touch_in_touch_out
       top_up_touch_in
-      subject.touch_out(exit_station)
+      card.touch_out(exit_station)
     end
 
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
         top_up_touch_in
-        expect(subject.in_journey?).to eq true
+        expect(card.in_journey?).to eq true
       end
 
       it 'should raise an error when balance is below minimum' do
-        expect { subject.touch_in(entry_station) }.to raise_error RuntimeError
+        expect { card.touch_in(entry_station) }.to raise_error RuntimeError
+      end
+
+      it 'should save the entry station in the journey' do
+        top_up_touch_in
+        start_journey = { entry_station: entry_station, exit_station: nil}
+        expect(card.journey).to eq start_journey
       end
     end
 
     describe '#touch_out method' do
       it 'should respond to #touch_out' do
         top_up_touch_in_touch_out
-        expect(subject.in_journey?).to eq false
+        expect(card.in_journey?).to eq false
       end
 
       it 'should reduce card balance by the minimum fare' do
         top_up_touch_in
-        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
+        expect{ card.touch_out(exit_station) }.to change{ card.balance}.by(-Oystercard::MINIMUM_VALUE)
       end
 
-      it 'should record the journey' do
+      it 'should save the exit station' do
         top_up_touch_in_touch_out
-        expect(subject.journey_history.length).to eq 1
+        end_journey = { entry_station: entry_station, exit_station: exit_station }
+        expect(card.journey).to eq end_journey
       end
-    end
 
-    describe 'journey history' do
-      it 'should store the journey' do
+      it 'should store the journey in the journey history' do
         top_up_touch_in_touch_out
-        expect(subject.journey_history).to include(entry_station => exit_station)
+        end_journey = { entry_station: entry_station, exit_station: exit_station }
+        expect(card.journey_history).to include end_journey
       end
     end
   end
