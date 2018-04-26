@@ -10,10 +10,10 @@ describe Oystercard do
     it 'should have £0 #balance on setup' do
       expect(card.balance).to eq 0
     end
-    it 'should have an empty journey' do
-      journey_init = { entry_station: nil, exit_station: nil }
-      expect(card.journey).to eq journey_init
-    end
+    # it 'should have an empty journey' do
+    #   journey_init = { entry_station: nil, exit_station: nil }
+    #   expect(card.journey).to eq journey_init
+    # end
   end
 
   describe '#top_up' do
@@ -39,10 +39,10 @@ describe Oystercard do
       it 'should respond to #touch_in' do
         expect(card.in_journey?).to eq true
       end
-      it 'should save the entry station in the journey' do
-        start_journey = { entry_station: entry_station, exit_station: nil}
-        expect(card.journey).to eq start_journey
-      end
+      # it 'should save the entry station in the journey' do
+      #   start_journey = { entry_station: entry_station, exit_station: nil}
+      #   expect(card.journey).to eq start_journey
+      # end
     end
 
     describe '#touch_in error' do

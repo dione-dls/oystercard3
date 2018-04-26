@@ -1,4 +1,5 @@
 require './lib/oystercard.rb'
+require './lib/journey.rb'
 
 def new_card
   oystercard = Oystercard.new
@@ -36,11 +37,22 @@ def create_station
   p station
 end
 
+def new_journey
+  journey = Journey.new
+  p journey
+end
+
+def record_start_journey
+  journey = Journey.new
+  journey.start_journey('Station 1')
+  p journey
+end
 # new_card
 # add_money
 # save_entry_station
 # save_exit_station
-
-create_station
+#create_station
+new_journey
+record_start_journey
 
 # irb -r './spec/feature_tests.rb'
