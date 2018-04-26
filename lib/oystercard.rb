@@ -27,7 +27,6 @@ class Oystercard
 
   def touch_out(exit_station)
     deduct(MINIMUM_VALUE)
-  #  @journey_history[entry_station] = exit_station
     @journey[:exit_station] = exit_station
     @journey_history << @journey
     @entry_station = nil
@@ -39,4 +38,5 @@ class Oystercard
     raise "Invalid amount" if value < 0
     @balance -= value
   end
+  
 end
