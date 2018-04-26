@@ -47,12 +47,46 @@ def record_start_journey
   journey.start_journey('Station 1')
   p journey
 end
-# new_card
+
+def end_journey
+  journey = Journey.new
+  journey.start_journey('Station 1')
+  journey.end_journey('Station 2')
+  p journey
+end
+
+def journey_complete
+  journey = Journey.new
+  journey.start_journey('Station 1')
+  journey.end_journey('Station 2')
+  journey.complete?
+  p journey
+end
+
+def return_minimum_fare
+  journey = Journey.new
+  journey.start_journey('Station 1')
+  journey.end_journey('Station 2')
+  p journey.fare
+  p journey
+end
+
+def incomplete_journey
+  journey = Journey.new
+  journey.end_journey('Station 2')
+  p journey.fare
+  p journey
+end
+
+new_card
 # add_money
 # save_entry_station
 # save_exit_station
 #create_station
-new_journey
+# new_journey
 record_start_journey
+# end_journey
+# return_minimum_fare
+# incomplete_journey
 
 # irb -r './spec/feature_tests.rb'
