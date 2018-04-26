@@ -57,9 +57,6 @@ describe Oystercard do
         card.touch_in(entry_station)
         card.touch_out(exit_station)
       end
-      it 'should respond to #touch_out' do
-        expect(card.in_journey?).to eq false
-      end
       it 'should save the exit station' do
         end_journey = { entry_station: entry_station, exit_station: exit_station }
         expect(card.journey).to eq end_journey
@@ -74,7 +71,7 @@ describe Oystercard do
         expect{ card.touch_out(exit_station) }.to change{ card.balance}.by(-Oystercard::MINIMUM_VALUE)
       end
     end
-    
+
   end
 
 end

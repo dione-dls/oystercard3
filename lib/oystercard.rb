@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :entry_station, :journey, :journey_history
+  attr_reader :balance, :journey, :journey_history
 
   LIMIT = 90
   MINIMUM_VALUE = 1
@@ -29,7 +29,7 @@ class Oystercard
     deduct(MINIMUM_VALUE)
     @journey[:exit_station] = exit_station
     @journey_history << @journey
-    @entry_station = nil
+    # @entry_station = nil
   end
 
   private
@@ -38,5 +38,5 @@ class Oystercard
     raise "Invalid amount" if value < 0
     @balance -= value
   end
-  
+
 end
