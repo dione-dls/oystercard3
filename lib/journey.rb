@@ -23,13 +23,11 @@ class Journey
   end
 
   def complete?
-    if @current_journey[:entry_station] == nil || @current_journey[:exit_station] == nil then false else true
-    end
+    (@current_journey[:entry_station] != nil && @current_journey[:exit_station] != nil) ? true : false
   end
 
   def fare
-    if @current_journey[:entry_station] == nil || @current_journey[:exit_station] == nil then PENALTY_FARE else MINIMUM_FARE
-    end
+    (@current_journey[:entry_station].nil? || @current_journey[:exit_station].nil? ) ? PENALTY_FARE : MINIMUM_FARE
   end
 
   def add(current_journey)
