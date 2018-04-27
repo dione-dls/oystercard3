@@ -34,11 +34,6 @@ describe Journey do
   end
 
   describe '#complete?' do
-    it 'should return true if the journey had entry and exit station' do
-      journey.start_journey(entry_station)
-      journey.end_journey(exit_station)
-      expect(journey.complete?).to eq true
-    end
     it 'should be false if the journey did not have an entry station' do
       journey.end_journey(exit_station)
       expect(journey.complete?).to eq false

@@ -23,7 +23,7 @@ class Journey
   end
 
   def complete?
-    (@current_journey[:entry_station] != nil && @current_journey[:exit_station] != nil) ? true : false
+    !!@entry_station && !!@exit_station
   end
 
   def fare
