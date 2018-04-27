@@ -23,7 +23,17 @@ class Journey
   end
 
   def complete?
-    !!@entry_station && !!@exit_station
+      complete_journey
+#    !!@entry_station && !!@exit_station
+#    true
+  end
+
+  def complete_journey
+    if (@current_journey[:entry_station] && @current_journey[:exit_station])
+      then true
+    else
+      false
+    end
   end
 
   def fare
@@ -31,6 +41,7 @@ class Journey
   end
 
   def add(current_journey)
-    @journey_history << current_journey
+    @journey_history << @current_journey
+    @journey_history
   end
 end

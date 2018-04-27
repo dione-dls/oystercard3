@@ -1,4 +1,4 @@
-require 'journey'
+require_relative './journey.rb'
 
 class Oystercard
   attr_reader :balance, :journey, :journey_history
