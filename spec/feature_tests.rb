@@ -84,9 +84,9 @@ new_card
 # save_exit_station
 #create_station
 # new_journey
-record_start_journey
-# end_journey
-# return_minimum_fare
-# incomplete_journey
+# record_start_journey
+ end_journey
+ return_minimum_fare
+ incomplete_journey
 
 # irb -r './spec/feature_tests.rb'

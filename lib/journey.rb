@@ -1,12 +1,13 @@
 class Journey
 
-  attr_reader :current_journey
+  attr_reader :current_journey, :journey_history
 
   MINIMUM_FARE = 1
   PENALTY_FARE = 6
 
   def initialize
     @current_journey = { entry_station: nil, exit_station: nil}
+    @journey_history = []
     # @entry_station = entry_station
     # @exit_station = exit_station
   end
@@ -29,5 +30,9 @@ class Journey
   def fare
     if @current_journey[:entry_station] == nil || @current_journey[:exit_station] == nil then PENALTY_FARE else MINIMUM_FARE
     end
+  end
+
+  def add(current_journey)
+    @journey_history << current_journey
   end
 end
